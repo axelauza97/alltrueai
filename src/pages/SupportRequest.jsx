@@ -77,6 +77,7 @@ const SupportRequest = () => {
             }
             variant="outlined"
             required={true}
+            inputProps={{ "data-testid": "fullName" }}
           />
           <TextField
             label="Email"
@@ -89,6 +90,7 @@ const SupportRequest = () => {
             }
             variant="outlined"
             required={true}
+            inputProps={{ "data-testid": "email" }}
           />
           <IssueTypeControl
             register={methods.register}

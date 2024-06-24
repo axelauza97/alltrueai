@@ -30,6 +30,7 @@ export const IssueTypeControl = ({ error }) => {
         {...register("issueType")}
         error={error}
         value={issueType}
+        inputProps={{ "data-testid": "issueType" }}
       >
         {ISSUES.map((issueItem) => (
           <MenuItem key={issueItem.id} value={issueItem.id}>

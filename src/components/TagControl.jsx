@@ -22,6 +22,7 @@ export const TagControl = ({ error, helperText }) => {
         name="tags"
         control={control}
         defaultValue={[]}
+        inputProps={{ "data-testid": "tag" }}
         render={({ field }) => (
           <Select
             labelId="demo-multiple-checkbox-label"
