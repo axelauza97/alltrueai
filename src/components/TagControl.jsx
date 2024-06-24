@@ -3,13 +3,14 @@ import {
   Checkbox,
   Chip,
   FormControl,
+  FormHelperText,
   InputLabel,
   ListItemText,
   MenuItem,
   OutlinedInput,
   Select,
 } from "@mui/material";
-import { useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -22,40 +23,41 @@ const MenuProps = {
 };
 const tags = ["UI", "Backend", "Performance"];
 
-export const TagControl = () => {
-  const [tagName, setTagName] = useState([]);
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setTagName(typeof value === "string" ? value.split(",") : value);
-  };
+export const TagControl = ({ error, helperText }) => {
+  const { control } = useFormContext();
   return (
-    <FormControl className="max-w-full">
+    <FormControl className="max-w-full" error={error}>
       <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
-      <Select
-        labelId="demo-multiple-checkbox-label"
-        id="demo-multiple-checkbox"
-        multiple
-        value={tagName}
-        onChange={handleChange}
-        input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-        renderValue={(selected) => (
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-            {selected.map((value) => (
-              <Chip key={value} label={value} />
+      <Controller
+        name="tags"
+        control={control}
+        defaultValue={[]}
+        render={({ field }) => (
+          <Select
+            labelId="demo-multiple-checkbox-label"
+            multiple
+            value={field.value}
+            onChange={field.onChange}
+            input={<OutlinedInput label="Tag" />}
+            renderValue={(selected) => (
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                {selected.map((value) => (
+                  <Chip key={value} label={value} />
+                ))}
+              </Box>
+            )}
+            MenuProps={MenuProps}
+          >
+            {tags.map((name) => (
+              <MenuItem key={name} value={name}>
+                <Checkbox checked={field.value.indexOf(name) > -1} />
+                <ListItemText primary={name} />
+              </MenuItem>
             ))}
-          </Box>
+          </Select>
         )}
-        MenuProps={MenuProps}
-      >
-        {tags.map((name) => (
-          <MenuItem key={name} value={name}>
-            <Checkbox checked={tagName.indexOf(name) > -1} />
-            <ListItemText primary={name} />
-          </MenuItem>
-        ))}
-      </Select>
+      />
+      <FormHelperText>{helperText}</FormHelperText>
     </FormControl>
   );
 };

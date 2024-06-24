@@ -1,4 +1,5 @@
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { useFormContext } from "react-hook-form";
 const ISSUES = [
   {
     id: "bug",
@@ -13,7 +14,10 @@ const ISSUES = [
     text: "General Inquiry",
   },
 ];
-export const IssueTypeControl = () => {
+export const IssueTypeControl = ({ error }) => {
+  const { register, watch } = useFormContext();
+  const issueType = watch("issueType", "");
+
   return (
     <FormControl fullWidth>
       <InputLabel id="demo-simple-select-label">Issue Type</InputLabel>
@@ -21,10 +25,11 @@ export const IssueTypeControl = () => {
       <Select
         labelId="demo-simple-select-label"
         id="demo-simple-select"
-        // value={issue}
         label="Issue Type"
-        // onChange={handleChange}
         required={true}
+        {...register("issueType")}
+        error={error}
+        value={issueType}
       >
         {ISSUES.map((issueItem) => (
           <MenuItem key={issueItem.id} value={issueItem.id}>
